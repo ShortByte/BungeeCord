@@ -41,12 +41,7 @@ import net.md_5.bungee.forge.ForgeServerHandler;
 import net.md_5.bungee.netty.ChannelWrapper;
 import net.md_5.bungee.netty.HandlerBoss;
 import net.md_5.bungee.netty.PipelineUtils;
-import net.md_5.bungee.protocol.DefinedPacket;
-import net.md_5.bungee.protocol.MinecraftDecoder;
-import net.md_5.bungee.protocol.MinecraftEncoder;
-import net.md_5.bungee.protocol.PacketWrapper;
-import net.md_5.bungee.protocol.Protocol;
-import net.md_5.bungee.protocol.ProtocolConstants;
+import net.md_5.bungee.protocol.*;
 import net.md_5.bungee.protocol.packet.*;
 import net.md_5.bungee.tab.ServerUnique;
 import net.md_5.bungee.tab.TabList;
@@ -817,5 +812,10 @@ public final class UserConnection implements ProxiedPlayer
     {
         Preconditions.checkState( getPendingConnection().getVersion() >= ProtocolConstants.MINECRAFT_1_20_3, "Remove resource pack are only supported in 1.20.3 and above" );
         unsafe().sendPacket( new ResourcePackRemove( Optional.of( uuid ) ) );
+    }
+
+    public Property[] getGameProfileProperties()
+    {
+        return this.pendingConnection.getLoginProfile().getProperties();
     }
 }

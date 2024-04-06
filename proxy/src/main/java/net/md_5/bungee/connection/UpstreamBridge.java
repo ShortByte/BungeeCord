@@ -68,10 +68,7 @@ public class UpstreamBridge extends PacketHandler
             oldPacket.setAction( PlayerListItem.Action.REMOVE_PLAYER );
             PlayerListItem.Item item = new PlayerListItem.Item();
             item.setUuid( con.getUniqueId() );
-            oldPacket.setItems( new PlayerListItem.Item[]
-                {
-                    item
-                } );
+            oldPacket.setItems( new PlayerListItem.Item[]{item} );
 
             PlayerListItemRemove newPacket = new PlayerListItemRemove();
             newPacket.setUuids( new UUID[]
