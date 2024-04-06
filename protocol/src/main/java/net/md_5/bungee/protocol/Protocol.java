@@ -9,56 +9,7 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 import java.util.function.Supplier;
 import lombok.Data;
 import lombok.Getter;
-import net.md_5.bungee.protocol.packet.BossBar;
-import net.md_5.bungee.protocol.packet.Chat;
-import net.md_5.bungee.protocol.packet.ClearTitles;
-import net.md_5.bungee.protocol.packet.ClientChat;
-import net.md_5.bungee.protocol.packet.ClientCommand;
-import net.md_5.bungee.protocol.packet.ClientCommandSigned;
-import net.md_5.bungee.protocol.packet.ClientSettings;
-import net.md_5.bungee.protocol.packet.Commands;
-import net.md_5.bungee.protocol.packet.CookieRequest;
-import net.md_5.bungee.protocol.packet.CookieResponse;
-import net.md_5.bungee.protocol.packet.EncryptionRequest;
-import net.md_5.bungee.protocol.packet.EncryptionResponse;
-import net.md_5.bungee.protocol.packet.EntityStatus;
-import net.md_5.bungee.protocol.packet.FinishConfiguration;
-import net.md_5.bungee.protocol.packet.GameState;
-import net.md_5.bungee.protocol.packet.Handshake;
-import net.md_5.bungee.protocol.packet.KeepAlive;
-import net.md_5.bungee.protocol.packet.Kick;
-import net.md_5.bungee.protocol.packet.Login;
-import net.md_5.bungee.protocol.packet.LoginAcknowledged;
-import net.md_5.bungee.protocol.packet.LoginPayloadRequest;
-import net.md_5.bungee.protocol.packet.LoginPayloadResponse;
-import net.md_5.bungee.protocol.packet.LoginRequest;
-import net.md_5.bungee.protocol.packet.LoginSuccess;
-import net.md_5.bungee.protocol.packet.PingPacket;
-import net.md_5.bungee.protocol.packet.PlayerListHeaderFooter;
-import net.md_5.bungee.protocol.packet.PlayerListItem;
-import net.md_5.bungee.protocol.packet.PlayerListItemRemove;
-import net.md_5.bungee.protocol.packet.PlayerListItemUpdate;
-import net.md_5.bungee.protocol.packet.PluginMessage;
-import net.md_5.bungee.protocol.packet.Respawn;
-import net.md_5.bungee.protocol.packet.ScoreboardDisplay;
-import net.md_5.bungee.protocol.packet.ScoreboardObjective;
-import net.md_5.bungee.protocol.packet.ScoreboardScore;
-import net.md_5.bungee.protocol.packet.ScoreboardScoreReset;
-import net.md_5.bungee.protocol.packet.ServerData;
-import net.md_5.bungee.protocol.packet.SetCompression;
-import net.md_5.bungee.protocol.packet.StartConfiguration;
-import net.md_5.bungee.protocol.packet.StatusRequest;
-import net.md_5.bungee.protocol.packet.StatusResponse;
-import net.md_5.bungee.protocol.packet.StoreCookie;
-import net.md_5.bungee.protocol.packet.Subtitle;
-import net.md_5.bungee.protocol.packet.SystemChat;
-import net.md_5.bungee.protocol.packet.TabCompleteRequest;
-import net.md_5.bungee.protocol.packet.TabCompleteResponse;
-import net.md_5.bungee.protocol.packet.Team;
-import net.md_5.bungee.protocol.packet.Title;
-import net.md_5.bungee.protocol.packet.TitleTimes;
-import net.md_5.bungee.protocol.packet.Transfer;
-import net.md_5.bungee.protocol.packet.ViewDistance;
+import net.md_5.bungee.protocol.packet.*;
 
 public enum Protocol
 {
@@ -496,6 +447,18 @@ public enum Protocol
                     Transfer::new,
                     map( ProtocolConstants.MINECRAFT_1_20_5, 0x73 )
             );
+            TO_CLIENT.registerPacket(
+                ResourcePackRemove.class,
+                ResourcePackRemove::new,
+                map( ProtocolConstants.MINECRAFT_1_20_3, 0x43 )
+            );
+            TO_CLIENT.registerPacket(
+                ResourcePack.class,
+                ResourcePack::new,
+                map( ProtocolConstants.MINECRAFT_1_20, 0x40 ),
+                map( ProtocolConstants.MINECRAFT_1_20_2, 0x42 ),
+                map( ProtocolConstants.MINECRAFT_1_20_3, 0x44 )
+            );
 
             TO_SERVER.registerPacket(
                     KeepAlive.class,
@@ -602,6 +565,13 @@ public enum Protocol
                     CookieResponse.class,
                     CookieResponse::new,
                     map( ProtocolConstants.MINECRAFT_1_20_5, 0x11 )
+            );
+            TO_SERVER.registerPacket(
+                ResourcePackResponse.class,
+                ResourcePackResponse::new,
+                map( ProtocolConstants.MINECRAFT_1_20, 0x24 ),
+                map( ProtocolConstants.MINECRAFT_1_20_2, 0x27 ),
+                map( ProtocolConstants.MINECRAFT_1_20_3, 0x28 )
             );
         }
     },
@@ -741,6 +711,17 @@ public enum Protocol
                     Transfer::new,
                     map( ProtocolConstants.MINECRAFT_1_20_5, 0x0B )
             );
+            TO_CLIENT.registerPacket(
+                ResourcePackRemove.class,
+                ResourcePackRemove::new,
+                map( ProtocolConstants.MINECRAFT_1_20_3, 0x06 )
+            );
+            TO_CLIENT.registerPacket(
+                ResourcePack.class,
+                ResourcePack::new,
+                map( ProtocolConstants.MINECRAFT_1_20_2, 0x06 ),
+                map( ProtocolConstants.MINECRAFT_1_20_3, 0x07 )
+            );
 
             TO_SERVER.registerPacket(
                     ClientSettings.class,
@@ -764,6 +745,11 @@ public enum Protocol
                     KeepAlive::new,
                     map( ProtocolConstants.MINECRAFT_1_20_2, 0x03 ),
                     map( ProtocolConstants.MINECRAFT_1_20_5, 0x04 )
+            );
+            TO_SERVER.registerPacket(
+                    ResourcePackResponse.class,
+                    ResourcePackResponse::new,
+                    map( ProtocolConstants.MINECRAFT_1_20_2, 0x05 )
             );
         }
     };

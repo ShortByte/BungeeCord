@@ -69,7 +69,7 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * Send a message to the specified screen position of this player.
      *
      * @param position the screen position
-     * @param message the message to send
+     * @param message  the message to send
      */
     public void sendMessage(ChatMessageType position, BaseComponent... message);
 
@@ -77,14 +77,14 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * Send a message to the specified screen position of this player.
      *
      * @param position the screen position
-     * @param message the message to send
+     * @param message  the message to send
      */
     public void sendMessage(ChatMessageType position, BaseComponent message);
 
     /**
      * Send a message to this player.
      *
-     * @param sender the sender of the message
+     * @param sender  the sender of the message
      * @param message the message to send
      */
     public void sendMessage(UUID sender, BaseComponent... message);
@@ -92,7 +92,7 @@ public interface ProxiedPlayer extends Connection, CommandSender
     /**
      * Send a message to this player.
      *
-     * @param sender the sender of the message
+     * @param sender  the sender of the message
      * @param message the message to send
      */
     public void sendMessage(UUID sender, BaseComponent message);
@@ -121,10 +121,10 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * closing the current one. Depending on the implementation, this method
      * might return before the user has been connected.
      *
-     * @param target the new server to connect to
+     * @param target   the new server to connect to
      * @param callback the method called when the connection is complete, or
-     * when an exception is encountered. The boolean parameter denotes success
-     * (true) or failure (false).
+     *                 when an exception is encountered. The boolean parameter denotes success
+     *                 (true) or failure (false).
      */
     void connect(ServerInfo target, Callback<Boolean> callback);
 
@@ -133,11 +133,11 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * closing the current one. Depending on the implementation, this method
      * might return before the user has been connected.
      *
-     * @param target the new server to connect to
+     * @param target   the new server to connect to
      * @param callback the method called when the connection is complete, or
-     * when an exception is encountered. The boolean parameter denotes success
-     * (true) or failure (false).
-     * @param reason the reason for connecting to the new server
+     *                 when an exception is encountered. The boolean parameter denotes success
+     *                 (true) or failure (false).
+     * @param reason   the reason for connecting to the new server
      */
     void connect(ServerInfo target, Callback<Boolean> callback, ServerConnectEvent.Reason reason);
 
@@ -166,13 +166,13 @@ public interface ProxiedPlayer extends Connection, CommandSender
 
     /**
      * Send a plugin message to this player.
-     *
+     * <p>
      * In recent Minecraft versions channel names must contain a colon separator
      * and consist of [a-z0-9/._-]. This will be enforced in a future version.
      * The "BungeeCord" channel is an exception and may only take this form.
      *
      * @param channel the channel to send this data via
-     * @param data the data to send
+     * @param data    the data to send
      */
     void sendData(String channel, byte[] data);
 
@@ -346,12 +346,12 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * Retrieves a cookie from this player.
      *
      * @param cookie the resource location of the cookie, for example
-     * "bungeecord:my_cookie"
+     *               "bungeecord:my_cookie"
      * @return a {@link CompletableFuture} that will be completed when the
      * Cookie response is received. If the cookie is not set in the client, the
      * {@link CompletableFuture} will complete with a null value
      * @throws IllegalStateException if the player's version is not at least
-     * 1.20.5
+     *                               1.20.5
      */
     @ApiStatus.Experimental
     CompletableFuture<byte[]> retrieveCookie(String cookie);
@@ -360,10 +360,10 @@ public interface ProxiedPlayer extends Connection, CommandSender
      * Stores a cookie in this player's client.
      *
      * @param cookie the resource location of the cookie, for example
-     * "bungeecord:my_cookie"
-     * @param data the data to store in the cookie
+     *               "bungeecord:my_cookie"
+     * @param data   the data to store in the cookie
      * @throws IllegalStateException if the player's version is not at least
-     * 1.20.5
+     *                               1.20.5
      */
     @ApiStatus.Experimental
     void storeCookie(String cookie, byte[] data);
@@ -371,15 +371,92 @@ public interface ProxiedPlayer extends Connection, CommandSender
     /**
      * Requests this player to connect to a different server specified by host
      * and port.
-     *
+     * <p>
      * This is a client-side transfer - host and port should not specify a
      * BungeeCord backend server.
      *
      * @param host the host of the server to transfer to
      * @param port the port of the server to transfer to
      * @throws IllegalStateException if the players version is not at least
-     * 1.20.5
+     *                               1.20.5
      */
     @ApiStatus.Experimental
     void transfer(String host, int port);
+
+    /**
+     * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
+     * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
+     * @param url The URL for the resource pack.
+     * @param hash The SHA-1 hash value for the resource pack.
+     * @param forced Whether the Resource Pack must be accepted.
+     * @param promptMessage The pop-up message displayed in the client.
+     * @throws IllegalStateException if the player is not between versions
+     *                               1.20 . 1.20.2
+     */
+    void setResourcePack(String url, String hash, boolean forced, BaseComponent[] promptMessage);
+
+    /**
+     * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
+     * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
+     * @param url The URL for the resource pack.
+     * @param hash The SHA-1 hash value for the resource pack.
+     * @param forced Whether the Resource Pack must be accepted.
+     * @throws IllegalStateException if the player is not between versions
+     *                               1.20 . 1.20.2
+     */
+    void setResourcePack(String url, String hash, boolean forced);
+
+    /**
+     * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
+     * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
+     * @param url The URL for the resource pack.
+     * @param hash The SHA-1 hash value for the resource pack.
+     * @throws IllegalStateException if the player is not between versions
+     *                               1.20 . 1.20.2
+     */
+    void setResourcePack(String url, String hash);
+
+    /**
+     * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
+     * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
+     * @param url The URL for the resource pack.
+     * @param hash The SHA-1 hash value for the resource pack.
+     * @param forced Whether the Resource Pack must be accepted.
+     * @param promptMessage The pop-up message displayed in the client.
+     * @return a {@link UUID} of the resource pack.
+     * @throws IllegalStateException if the players version is not at least
+     *                               1.20.3
+     */
+    UUID addResourcePack(String url, String hash, boolean forced, BaseComponent[] promptMessage);
+
+    /**
+     * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
+     * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
+     * @param url The URL for the resource pack.
+     * @param hash The SHA-1 hash value for the resource pack.
+     * @param forced Whether the Resource Pack must be accepted.
+     * @return a {@link UUID} of the resource pack.
+     * @throws IllegalStateException if the players version is not at least
+     *                               1.20.3
+     */
+    UUID addResourcePack(String url, String hash, boolean forced);
+
+    /**
+     * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
+     * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
+     * @param url The URL for the resource pack.
+     * @param hash The SHA-1 hash value for the resource pack.
+     * @return a {@link UUID} of the resource pack.
+     * @throws IllegalStateException if the players version is not at least
+     *                               1.20.3
+     */
+    UUID addResourcePack(String url, String hash);
+
+    /**
+     * Sends Remove a loaded resource pack from the player.
+     * @param uuid The UUID of the loaded resource pack.
+     * @throws IllegalStateException if the players version is not at least
+     *                               1.20.3
+     */
+    void removeResourcePack(UUID uuid);
 }

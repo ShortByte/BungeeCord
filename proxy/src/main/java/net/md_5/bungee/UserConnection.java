@@ -11,15 +11,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.util.internal.PlatformDependent;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
@@ -55,15 +47,7 @@ import net.md_5.bungee.protocol.MinecraftEncoder;
 import net.md_5.bungee.protocol.PacketWrapper;
 import net.md_5.bungee.protocol.Protocol;
 import net.md_5.bungee.protocol.ProtocolConstants;
-import net.md_5.bungee.protocol.packet.Chat;
-import net.md_5.bungee.protocol.packet.ClientSettings;
-import net.md_5.bungee.protocol.packet.Kick;
-import net.md_5.bungee.protocol.packet.PlayerListHeaderFooter;
-import net.md_5.bungee.protocol.packet.PluginMessage;
-import net.md_5.bungee.protocol.packet.SetCompression;
-import net.md_5.bungee.protocol.packet.StoreCookie;
-import net.md_5.bungee.protocol.packet.SystemChat;
-import net.md_5.bungee.protocol.packet.Transfer;
+import net.md_5.bungee.protocol.packet.*;
 import net.md_5.bungee.tab.ServerUnique;
 import net.md_5.bungee.tab.TabList;
 import net.md_5.bungee.util.CaseInsensitiveSet;
@@ -389,12 +373,7 @@ public final class UserConnection implements ProxiedPlayer
                 }
             }
         };
-        Bootstrap b = new Bootstrap()
-                .channel( PipelineUtils.getChannel( target.getAddress() ) )
-                .group( ch.getHandle().eventLoop() )
-                .handler( initializer )
-                .option( ChannelOption.CONNECT_TIMEOUT_MILLIS, request.getConnectTimeout() )
-                .remoteAddress( target.getAddress() );
+        Bootstrap b = new Bootstrap().channel( PipelineUtils.getChannel( target.getAddress() ) ).group( ch.getHandle().eventLoop() ).handler( initializer ).option( ChannelOption.CONNECT_TIMEOUT_MILLIS, request.getConnectTimeout() ).remoteAddress( target.getAddress() );
         // Windows is bugged, multi homed users will just have to live with random connecting IPs
         if ( getPendingConnection().getListener().isSetLocalAddress() && !PlatformDependent.isWindows() && getPendingConnection().getListener().getSocketAddress() instanceof InetSocketAddress )
         {
@@ -430,10 +409,7 @@ public final class UserConnection implements ProxiedPlayer
     {
         if ( !ch.isClosing() )
         {
-            bungee.getLogger().log( Level.INFO, "[{0}] disconnected with: {1}", new Object[]
-            {
-                getName(), BaseComponent.toLegacyText( reason )
-            } );
+            bungee.getLogger().log( Level.INFO, "[{0}] disconnected with: {1}", new Object[] {getName(), BaseComponent.toLegacyText( reason )} );
 
             ch.close( new Kick( reason ) );
 
@@ -723,10 +699,7 @@ public final class UserConnection implements ProxiedPlayer
         header = ChatComponentTransformer.getInstance().transform( this, true, header );
         footer = ChatComponentTransformer.getInstance().transform( this, true, footer );
 
-        sendPacketQueued( new PlayerListHeaderFooter(
-                header,
-                footer
-        ) );
+        sendPacketQueued( new PlayerListHeaderFooter( header, footer ) );
     }
 
     @Override
@@ -795,5 +768,54 @@ public final class UserConnection implements ProxiedPlayer
         Preconditions.checkState( getPendingConnection().getVersion() >= ProtocolConstants.MINECRAFT_1_20_5, "Transfers are only supported in 1.20.5 and above" );
 
         unsafe().sendPacket( new Transfer( host, port ) );
+    }
+
+    @Override
+    public void setResourcePack(String url, String hash, boolean forced, BaseComponent[] promptMessage)
+    {
+        Preconditions.checkState( getPendingConnection().getVersion() >= ProtocolConstants.MINECRAFT_1_20 && getPendingConnection().getVersion() <= ProtocolConstants.MINECRAFT_1_20_2, "Set resource pack are only supported between versions 1.20 - 1.20.2" );
+
+        unsafe().sendPacket( new ResourcePack( null, url, hash, forced, promptMessage == null ? Optional.empty() : Optional.of( promptMessage ) ) );
+    }
+
+    @Override
+    public void setResourcePack(String url, String hash, boolean forced)
+    {
+        setResourcePack( url, hash, forced, null );
+    }
+
+    @Override
+    public void setResourcePack(String url, String hash)
+    {
+        setResourcePack( url, hash, false, null );
+    }
+
+    @Override
+    public UUID addResourcePack(String url, String hash, boolean forced, BaseComponent[] promptMessage)
+    {
+        Preconditions.checkState( getPendingConnection().getVersion() >= ProtocolConstants.MINECRAFT_1_20_3, "Add resource pack are only supported in 1.20.3 and above" );
+        UUID uuid = UUID.randomUUID();
+
+        unsafe().sendPacket( new ResourcePack( Optional.of( uuid ), url, hash, forced, promptMessage == null ? Optional.empty() : Optional.of( promptMessage ) ) );
+        return uuid;
+    }
+
+    @Override
+    public UUID addResourcePack(String url, String hash, boolean forced)
+    {
+        return addResourcePack( url, hash, forced, null );
+    }
+
+    @Override
+    public UUID addResourcePack(String url, String hash)
+    {
+        return addResourcePack( url, hash, false, null );
+    }
+
+    @Override
+    public void removeResourcePack(UUID uuid)
+    {
+        Preconditions.checkState( getPendingConnection().getVersion() >= ProtocolConstants.MINECRAFT_1_20_3, "Remove resource pack are only supported in 1.20.3 and above" );
+        unsafe().sendPacket( new ResourcePackRemove( Optional.of( uuid ) ) );
     }
 }
