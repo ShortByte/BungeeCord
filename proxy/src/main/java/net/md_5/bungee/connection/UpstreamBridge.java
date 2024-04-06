@@ -69,15 +69,15 @@ public class UpstreamBridge extends PacketHandler
             PlayerListItem.Item item = new PlayerListItem.Item();
             item.setUuid( con.getUniqueId() );
             oldPacket.setItems( new PlayerListItem.Item[]
-            {
-                item
-            } );
+                {
+                    item
+                } );
 
             PlayerListItemRemove newPacket = new PlayerListItemRemove();
             newPacket.setUuids( new UUID[]
-            {
-                con.getUniqueId()
-            } );
+                {
+                    con.getUniqueId()
+                } );
 
             for ( ProxiedPlayer player : con.getServer().getInfo().getPlayers() )
             {
@@ -362,7 +362,9 @@ public class UpstreamBridge extends PacketHandler
     @Override
     public void handle(ResourcePackResponse resourcePackResponse) throws Exception
     {
-        ResourcePackResponseEvent resourcePackResponseEvent = new ResourcePackResponseEvent( con, resourcePackResponse.getResult() );
+        ResourcePackResponseEvent.Result result = ResourcePackResponseEvent.Result.values()[resourcePackResponse.getResult()];
+
+        ResourcePackResponseEvent resourcePackResponseEvent = new ResourcePackResponseEvent( con, resourcePackResponse.getUuid(), result );
         bungee.getPluginManager().callEvent( resourcePackResponseEvent );
     }
 
