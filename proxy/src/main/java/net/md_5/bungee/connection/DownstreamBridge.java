@@ -54,23 +54,7 @@ import net.md_5.bungee.protocol.DefinedPacket;
 import net.md_5.bungee.protocol.PacketWrapper;
 import net.md_5.bungee.protocol.Protocol;
 import net.md_5.bungee.protocol.ProtocolConstants;
-import net.md_5.bungee.protocol.packet.BossBar;
-import net.md_5.bungee.protocol.packet.Commands;
-import net.md_5.bungee.protocol.packet.KeepAlive;
-import net.md_5.bungee.protocol.packet.Kick;
-import net.md_5.bungee.protocol.packet.Login;
-import net.md_5.bungee.protocol.packet.PlayerListItem;
-import net.md_5.bungee.protocol.packet.PlayerListItemRemove;
-import net.md_5.bungee.protocol.packet.PlayerListItemUpdate;
-import net.md_5.bungee.protocol.packet.PluginMessage;
-import net.md_5.bungee.protocol.packet.Respawn;
-import net.md_5.bungee.protocol.packet.ScoreboardDisplay;
-import net.md_5.bungee.protocol.packet.ScoreboardObjective;
-import net.md_5.bungee.protocol.packet.ScoreboardScore;
-import net.md_5.bungee.protocol.packet.ScoreboardScoreReset;
-import net.md_5.bungee.protocol.packet.ServerData;
-import net.md_5.bungee.protocol.packet.SetCompression;
-import net.md_5.bungee.protocol.packet.TabCompleteResponse;
+import net.md_5.bungee.protocol.packet.*;
 import net.md_5.bungee.tab.TabList;
 
 @RequiredArgsConstructor
@@ -785,6 +769,13 @@ public class DownstreamBridge extends PacketHandler
         ServerConnector.handleLogin( bungee, server.getCh(), con, server.getInfo(), null, server, login );
 
         throw CancelSendSignal.INSTANCE;
+    }
+
+    @Override
+    public void handle(ResourcePackResponse resourcePackResponse) throws Exception
+    {
+        System.out.println( "DownstreamBridge > ResourcePackResponse" );
+        super.handle( resourcePackResponse );
     }
 
     @Override
