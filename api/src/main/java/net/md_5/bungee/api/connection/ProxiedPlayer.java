@@ -14,6 +14,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.score.Scoreboard;
+import net.md_5.bungee.protocol.Property;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -386,9 +387,10 @@ public interface ProxiedPlayer extends Connection, CommandSender
     /**
      * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
      * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
-     * @param url The URL for the resource pack.
-     * @param hash The SHA-1 hash value for the resource pack.
-     * @param forced Whether the Resource Pack must be accepted.
+     *
+     * @param url           The URL for the resource pack.
+     * @param hash          The SHA-1 hash value for the resource pack.
+     * @param forced        Whether the Resource Pack must be accepted.
      * @param promptMessage The pop-up message displayed in the client.
      * @throws IllegalStateException if the player is not between versions
      *                               1.20 . 1.20.2
@@ -398,8 +400,9 @@ public interface ProxiedPlayer extends Connection, CommandSender
     /**
      * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
      * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
-     * @param url The URL for the resource pack.
-     * @param hash The SHA-1 hash value for the resource pack.
+     *
+     * @param url    The URL for the resource pack.
+     * @param hash   The SHA-1 hash value for the resource pack.
      * @param forced Whether the Resource Pack must be accepted.
      * @throws IllegalStateException if the player is not between versions
      *                               1.20 . 1.20.2
@@ -409,7 +412,8 @@ public interface ProxiedPlayer extends Connection, CommandSender
     /**
      * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
      * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
-     * @param url The URL for the resource pack.
+     *
+     * @param url  The URL for the resource pack.
      * @param hash The SHA-1 hash value for the resource pack.
      * @throws IllegalStateException if the player is not between versions
      *                               1.20 . 1.20.2
@@ -419,9 +423,10 @@ public interface ProxiedPlayer extends Connection, CommandSender
     /**
      * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
      * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
-     * @param url The URL for the resource pack.
-     * @param hash The SHA-1 hash value for the resource pack.
-     * @param forced Whether the Resource Pack must be accepted.
+     *
+     * @param url           The URL for the resource pack.
+     * @param hash          The SHA-1 hash value for the resource pack.
+     * @param forced        Whether the Resource Pack must be accepted.
      * @param promptMessage The pop-up message displayed in the client.
      * @return a {@link UUID} of the resource pack.
      * @throws IllegalStateException if the players version is not at least
@@ -432,8 +437,9 @@ public interface ProxiedPlayer extends Connection, CommandSender
     /**
      * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
      * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
-     * @param url The URL for the resource pack.
-     * @param hash The SHA-1 hash value for the resource pack.
+     *
+     * @param url    The URL for the resource pack.
+     * @param hash   The SHA-1 hash value for the resource pack.
      * @param forced Whether the Resource Pack must be accepted.
      * @return a {@link UUID} of the resource pack.
      * @throws IllegalStateException if the players version is not at least
@@ -444,7 +450,8 @@ public interface ProxiedPlayer extends Connection, CommandSender
     /**
      * Sends the specified resource pack from url to the player, using the specified 20-byte SHA-1 hash.
      * To monitor the status of the sent resource pack, subscribe to {@link net.md_5.bungee.api.event.ResourcePackResponseEvent}.
-     * @param url The URL for the resource pack.
+     *
+     * @param url  The URL for the resource pack.
      * @param hash The SHA-1 hash value for the resource pack.
      * @return a {@link UUID} of the resource pack.
      * @throws IllegalStateException if the players version is not at least
@@ -454,9 +461,17 @@ public interface ProxiedPlayer extends Connection, CommandSender
 
     /**
      * Sends Remove a loaded resource pack from the player.
+     *
      * @param uuid The UUID of the loaded resource pack.
      * @throws IllegalStateException if the players version is not at least
      *                               1.20.3
      */
     void removeResourcePack(UUID uuid);
+
+    /**
+     * Get the player game profile properties, if available.
+     *
+     * @return a {@link Property} array of properties.
+     */
+    Property[] getGameProfileProperties();
 }

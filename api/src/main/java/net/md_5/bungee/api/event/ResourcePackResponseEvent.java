@@ -1,12 +1,12 @@
 package net.md_5.bungee.api.event;
 
+import java.util.Optional;
+import java.util.UUID;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Event;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Event called to represent a player resource pack response.
