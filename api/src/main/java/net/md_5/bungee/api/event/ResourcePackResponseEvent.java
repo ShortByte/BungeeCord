@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Event;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Event called to represent a player resource pack response.
@@ -20,9 +22,9 @@ public class ResourcePackResponseEvent extends Event
      */
     private final ProxiedPlayer player;
     /**
-     * The result id.
+     * The resource pack uuid, if presented
      */
-    private final int resultId;
+    private final Optional<UUID> uuid;
     /**
      * The result.
      */
@@ -34,10 +36,10 @@ public class ResourcePackResponseEvent extends Event
         SUCCESSFULLY_DOWNLOADED, DECLINED, FAILED_TO_DOWNLOAD, ACCEPTED, INVALID_URL, FAILED_TO_RELOAD, DISCARDED;
     }
 
-    public ResourcePackResponseEvent(ProxiedPlayer player, int resultId)
+    public ResourcePackResponseEvent(ProxiedPlayer player, Optional<UUID> uuid, Result result)
     {
         this.player = player;
-        this.resultId = resultId;
-        this.result = Result.values()[resultId];
+        this.uuid = uuid;
+        this.result = result;
     }
 }
